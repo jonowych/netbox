@@ -45,8 +45,14 @@ done
 
 # Download latest netbox code
 #
-mkdir -p /opt/netbox/ && cd /opt/netbox/
-git clone -b master https://github.com/digitalocean/netbox.git .
+
+netbox_ver=$(echo "2.1.3")
+if [ ! -f /tmp/v"$netbox_ver".tar.gz ] ; then 
+  cd /tmp
+  wget https://github.com/digitalocean/netbox/archive/v"$netbox_ver".tar.gz
+  sudo tar -xzf v"$netbox_ver".tar.gz -C /opt
+  sudo ln -s netbox-"$netbox_ver"/ /opt/netbox
+fi
 
 pip3 install -r requirements.txt
 
@@ -55,13 +61,13 @@ pip3 install -r requirements.txt
 host=$(cat /etc/hostname)
 ip=$(cat /etc/network/interfaces | grep "iface enp0s3" -A 2 \
       | grep address | awk '{ print $2 }')
-
+sed -i 's/python/python3/' /opt/netbox/netbox/generate_secret_key.py
 key=$(/opt/netbox/netbox/generate_secret_key.py)
 
 cat /opt/netbox/netbox/netbox/configuration.example.py | \
   sed "s/^ALLOWED_HOSTS = \[/ALLOWED_HOSTS = \['$host', '$ip'/" | \
-  sed "s/'USER': '/'USER': '${USER}/" | \
-  sed "s/'USERNAME': '/'USERNAME': '${USER}/" | \
+  sed "s/'USER': '/'USER': 'sydadmin/" | \
+  sed "s/'USERNAME': '/'USERNAME': 'sydadmin/" | \
   sed "s/'PASSWORD': '/'PASSWORD': '67\.Epping/" | \
   sed "s/^SECRET_KEY = '/SECRET_KEY = '$key/" >> /tmp/configuration.py
 
