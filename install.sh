@@ -40,7 +40,7 @@ echo && echo -e "$(tput setaf 6)-- End of development tools installation --$(tpu
 
 # Download latest netbox code
 #
-netbox_ver=$(echo "2.1.3")
+netbox_ver=$(echo "2.2.6")
 if [ ! -f /tmp/v"$netbox_ver".tar.gz ] ; then 
   cd /tmp
   wget https://github.com/digitalocean/netbox/archive/v"$netbox_ver".tar.gz
@@ -61,7 +61,7 @@ key=$(/opt/netbox/netbox/generate_secret_key.py)
 cat /opt/netbox/netbox/netbox/configuration.example.py | \
   sed "s/^ALLOWED_HOSTS = \[\]$/ALLOWED_HOSTS = \['$host', '$ip'\]/" | \
   sed "s/'USER': '/'USER': 'sydadmin/" | \
-  sed "s/'USERNAME': '/'USERNAME': 'sydadmin/" | \
+  sed "s/'USERNAME': '/'USERNAME': 'sysadmin/" | \
   sed "s/'PASSWORD': '/'PASSWORD': '67\.Epping/" | \
   sed "s/^SECRET_KEY = '/SECRET_KEY = '$key/" >> /tmp/configuration.py
 
