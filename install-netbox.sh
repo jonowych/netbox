@@ -11,9 +11,14 @@ exec 2> >(tee -a /tmp/install.log >&2)
 # Prepare for Install... on User's directory
 #
 
+# install python3.6.3
+sudo add-apt-repository ppa:jonathonf/python-3.6
 sudo apt-get update 
+sudo apt-get install python3.6
+sudo rm /usr/bin/python3
+sudo ln -s python3.6 /usr/bin/python3
 
-core_apps=$(echo "python3 python3-dev python3-setuptools build-essential libxml2-dev libxslt1-dev libffi-dev graphviz libpq-dev libssl-dev zlib1g-dev")
+core_apps=$(echo "python3-dev python3-setuptools build-essential libxml2-dev libxslt1-dev libffi-dev graphviz libpq-dev libssl-dev zlib1g-dev")
 
 # Install core apps
 #
