@@ -11,12 +11,10 @@ exec 2> >(tee -a /tmp/install.log >&2)
 # Prepare for Install... on User's directory
 #
 
-# install python3.6.3
-sudo add-apt-repository ppa:jonathonf/python-3.6
-sudo apt-get update 
-sudo apt-get install python3.6
-sudo rm /usr/bin/python3
-sudo ln -s python3.6 /usr/bin/python3
+# install pip3 9.0.1
+
+apt-get install python3-pip
+/usr/bin/pip3 install --upgrade pip
 
 core_apps=$(echo "python3-dev python3-setuptools build-essential libxml2-dev libxslt1-dev libffi-dev graphviz libpq-dev libssl-dev zlib1g-dev")
 
@@ -28,22 +26,22 @@ for a in $core_apps; do
      echo $a has been installed
      echo
 done
-easy_install3 pip
 
 echo && echo -e $(tput setaf 6)"!!-- End of Python3 and development apps installation."$(tput sgr0)
 
 # Download latest netbox code
 #
 netbox_ver=$(echo "2.2.6")
-if [ ! -f /tmp/v"$netbox_ver".tar.gz ] ; then 
+if [ ! -f /tmp/v"$netbox_ver".tar.gz ] ; then
   cd /tmp
   wget https://github.com/digitalocean/netbox/archive/v"$netbox_ver".tar.gz
   sudo tar -xzf v"$netbox_ver".tar.gz -C /opt
   sudo ln -s netbox-"$netbox_ver"/ /opt/netbox
 fi
 
-pip3 install -r requirements.txt
-pip3 install napalm
+cd /opt/netbox
+sudo -H pip3 install -r requirements.txt
+sudo -H pip3 install napalm
 
 echo && echo -e $(tput setaf 6)"!!-- End of netbox apps installation"$(tput sgr0)
 
@@ -66,8 +64,7 @@ cat /opt/netbox/netbox/netbox/configuration.example.py | \
   sed "s/'PASSWORD': '/'PASSWORD': '$password/" | \
   sed "s/^SECRET_KEY = '/SECRET_KEY = '$key/" >> /tmp/configuration.py
 
-sudo mv -f /tmp/configuration.py /opt/netbox/netbox/netbox/
-pip3 install napalm
+sudo -H mv -f /tmp/configuration.py /opt/netbox/netbox/netbox/
 
 echo $(tput setaf 3)
 cat /opt/netbox/netbox/netbox/configuration.py
