@@ -15,6 +15,7 @@ exec 2> >(tee -a /tmp/install.log >&2)
 
 apt-get install python3-pip
 /usr/bin/pip3 install --upgrade pip
+/usr/bin/pip3 install --upgrade virtualenv 
 
 core_apps=$(echo "python3-dev python3-setuptools build-essential libxml2-dev libxslt1-dev libffi-dev graphviz libpq-dev libssl-dev zlib1g-dev")
 
