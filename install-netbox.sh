@@ -32,7 +32,7 @@ echo && echo -e $(tput setaf 6)"!!-- End of Python3 and development apps install
 
 # Download latest netbox code
 #
-netbox_ver=$(echo "2.2.6")
+netbox_ver=$(echo "2.2.7")
 if [ ! -f /tmp/v"$netbox_ver".tar.gz ] ; then
   cd /tmp
   wget https://github.com/digitalocean/netbox/archive/v"$netbox_ver".tar.gz
