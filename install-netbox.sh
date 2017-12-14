@@ -39,6 +39,7 @@ sudo -H pip3 install napalm
 
 echo $(tput setaf 6)
 echo "!!-- End of netbox apps installation"$(tput sgr0)
+sleep 3
 
 # Configure netbox
 #
@@ -60,12 +61,6 @@ cat /opt/netbox/netbox/netbox/configuration.example.py | \
   sed "s/^SECRET_KEY = '/SECRET_KEY = '$key/" >> /tmp/configuration.py
 
 sudo -H mv -f /tmp/configuration.py /opt/netbox/netbox/netbox/
-
-## run napim installation again to make "./manage.py migrate" work 
-cd /opt/netbox
-sudo -H pip3 install -r requirements.txt
-sudo -H pip3 install napalm
-sudo apt-get -y update
 
 echo $(tput setaf 3)
 cat /opt/netbox/netbox/netbox/configuration.py
