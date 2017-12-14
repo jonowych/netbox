@@ -25,12 +25,11 @@ echo "!!-- End of core apps installation --!!"$(tput sgr0)
 netbox_ver=$(echo "2.2.7")
 echo -e "$(tput setaf 6)Installing  netbox-v"$netbox_ver".... Please wait .... $(tput sgr0)"
 
-
 if [ ! -f /tmp/v"$netbox_ver".tar.gz ] ; then
   cd /tmp
   wget https://github.com/digitalocean/netbox/archive/v"$netbox_ver".tar.gz
   sudo tar -xzf v"$netbox_ver".tar.gz -C /opt
-  sudo ln -s netbox-"$netbox_ver"/ /opt/netbox
+  sudo ln -s /opt/netbox-"$netbox_ver"/ /opt/netbox
 fi
 
 cd /opt/netbox
