@@ -11,13 +11,7 @@ exec 2> >(tee -a /tmp/install.log >&2)
 # Prepare for Install... on User's directory
 #
 
-# install pip3 9.0.1
-
-apt-get install python3-pip
-/usr/bin/pip3 install --upgrade pip
-/usr/bin/pip3 install --upgrade virtualenv 
-
-core_apps=$(echo "python3-dev python3-setuptools build-essential libxml2-dev libxslt1-dev libffi-dev graphviz libpq-dev libssl-dev zlib1g-dev")
+core_apps=$(echo "build-essential libxml2-dev libxslt1-dev libffi-dev graphviz libpq-dev libssl-dev zlib1g-dev")
 
 # Install core apps
 #
@@ -28,11 +22,15 @@ for a in $core_apps; do
      echo
 done
 
-echo && echo -e $(tput setaf 6)"!!-- End of Python3 and development apps installation."$(tput sgr0)
+echo && echo -e $(tput setaf 6)"!!-- End of core apps installation."$(tput sgr0)
 
 # Download latest netbox code
 #
+
 netbox_ver=$(echo "2.2.7")
+echo -e "$(tput setaf 6)Installing  netbox-v"$netbox_ver".... Please wait .... $(tput sgr0)"
+
+
 if [ ! -f /tmp/v"$netbox_ver".tar.gz ] ; then
   cd /tmp
   wget https://github.com/digitalocean/netbox/archive/v"$netbox_ver".tar.gz

@@ -13,10 +13,19 @@ exec 2> >(tee -a /tmp/install.log >&2)
 
 sudo apt-get update 
 
-core_apps=$(echo "postgresql libpq-dev")
+# install pip3 9.0.1
+echo -e $(tput setaf 6)"Installing pip3 .... Please wait ...." $(tput sgr0)
+
+apt-get install -y python3-pip
+sudo -H /usr/bin/pip3 install --upgrade pip
+sudo -H /usr/bin/pip3 install --upgrade virtualenv 
+
+echo pip3 has been installed
 
 # Install core apps
 #
+
+core_apps=$(echo "libpq-dev postgresql")
 
 for a in $core_apps; do
      echo -e $(tput setaf 6)"Installing $a .... Please wait ...." $(tput sgr0)
