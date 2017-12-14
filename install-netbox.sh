@@ -62,7 +62,7 @@ cat /opt/netbox/netbox/netbox/configuration.example.py | \
   sed "s/'USER': '/'USER': '$user/" | \
   sed "s/'USERNAME': '/'USERNAME': '$user/" | \
   sed "s/'PASSWORD': '/'PASSWORD': '$password/" | \
-  sed "s/^SECRET_KEY = '/SECRET_KEY = '$key/" >> /tmp/configuration.py
+  sed "s/^SECRET_KEY =$/SECRET_KEY = '$key'/" >> /tmp/configuration.py
 
 sudo -H mv -f /tmp/configuration.py /opt/netbox/netbox/netbox/
 
