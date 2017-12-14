@@ -8,25 +8,20 @@ if [ ! "${USER}" = "root" ] ; then
 exec >  >(tee -a /tmp/install.log)
 exec 2> >(tee -a /tmp/install.log >&2)
 
-# Prepare for Install... on User's directory
-#
-
-core_apps=$(echo "build-essential libxml2-dev libxslt1-dev libffi-dev graphviz libpq-dev libssl-dev zlib1g-dev")
-
 # Install core apps
 #
+core_apps=$(echo "build-essential libxml2-dev libxslt1-dev libffi-dev graphviz libpq-dev libssl-dev zlib1g-dev")
 for a in $core_apps; do
-     echo -e "$(tput setaf 6)Installing $a .... Please wait .... $(tput sgr0)"
+     echo $(tput setaf 6)
+     echo "Installing $a .... Please wait .... "$(tput sgr0)
      sudo apt-get -qq -y install $a
-     echo $a has been installed
-     echo
 done
 
-echo && echo -e $(tput setaf 6)"!!-- End of core apps installation."$(tput sgr0)
+echo $(tput setaf 6)
+echo "!!-- End of core apps installation --!!"$(tput sgr0)
 
-# Download latest netbox code
+# Download and install latest netbox 
 #
-
 netbox_ver=$(echo "2.2.7")
 echo -e "$(tput setaf 6)Installing  netbox-v"$netbox_ver".... Please wait .... $(tput sgr0)"
 
@@ -42,7 +37,8 @@ cd /opt/netbox
 sudo -H pip3 install -r requirements.txt
 sudo -H pip3 install napalm
 
-echo && echo -e $(tput setaf 6)"!!-- End of netbox apps installation"$(tput sgr0)
+echo $(tput setaf 6)
+echo "!!-- End of netbox apps installation"$(tput sgr0)
 
 # Configure netbox
 #
@@ -65,6 +61,12 @@ cat /opt/netbox/netbox/netbox/configuration.example.py | \
 
 sudo -H mv -f /tmp/configuration.py /opt/netbox/netbox/netbox/
 
+## run napim installation again to make "./manage.py migrate" work 
+cd /opt/netbox
+sudo -H pip3 install -r requirements.txt
+sudo -H pip3 install napalm
+sudo apt-get -y update
+
 echo $(tput setaf 3)
 cat /opt/netbox/netbox/netbox/configuration.py
 echo $(tput sgr0)
@@ -72,9 +74,9 @@ echo $(tput sgr0)
 echo $(tput setaf 6)
 echo "Run Database migration with following commands:"
 echo "cd /opt/netbox/netbox/"
-echo "python3 ./manage.py migrate"
-echo "python3 ./manage.py createsuperuser"
-echo "python3 ./manage.py collectstatic --no-input"
-echo "python3 ./manage.py loaddata initial_data"
-echo "python3 ./manage.py runserver 0.0.0.0:8000 --insecure"
+echo "sudo -H python3 ./manage.py migrate"
+echo "sudo -H python3 ./manage.py createsuperuser"
+echo "sudo -H python3 ./manage.py collectstatic --no-input"
+echo "sudo -H python3 ./manage.py loaddata initial_data"
+echo "sudo -H python3 ./manage.py runserver 0.0.0.0:8000 --insecure"
 echo $(tput sgr0)
