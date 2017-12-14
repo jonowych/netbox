@@ -31,6 +31,7 @@ if [ ! -f /tmp/v"$netbox_ver".tar.gz ] ; then
   sudo tar -xzf v"$netbox_ver".tar.gz -C /opt
   sudo ln -s /opt/netbox-"$netbox_ver"/ /opt/netbox
 fi
+sleep 2
 
 cd /opt/netbox
 sudo -H pip3 install -r requirements.txt
@@ -38,7 +39,7 @@ sudo -H pip3 install napalm
 
 echo $(tput setaf 6)
 echo "!!-- End of netbox apps installation"$(tput sgr0)
-sleep 3
+sleep 2
 
 # Configure netbox
 #
