@@ -26,6 +26,8 @@ netbox_ver=$(echo "2.2.7")
 echo -e "$(tput setaf 6)Installing  netbox-v"$netbox_ver".... Please wait .... $(tput sgr0)"
 
 if [ ! -f /tmp/v"$netbox_ver".tar.gz ] ; then
+  echo $(tput setaf 6)
+  echo "Downloading netbox version-$netbox_ver .... Please wait .... "$(tput sgr0)
   cd /tmp
   wget https://github.com/digitalocean/netbox/archive/v"$netbox_ver".tar.gz
   sudo tar -xzf v"$netbox_ver".tar.gz -C /opt
@@ -34,7 +36,9 @@ fi
 sleep 2
 
 cd /opt/netbox
+echo -e $(tput setaf 6)"\nPip3 installing requirements .... Please wait .... "$(tput sgr0)
 sudo -H pip3 install -r requirements.txt
+echo -e $(tput setaf 6)"\nPip3 installing napalm .... Please wait .... "$(tput sgr0)
 sudo -H pip3 install napalm
 
 echo $(tput setaf 6)
