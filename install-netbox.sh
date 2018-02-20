@@ -8,8 +8,7 @@ if [ ! "${USER}" = "root" ] ; then
 exec >  >(tee -a /tmp/install.log)
 exec 2> >(tee -a /tmp/install.log >&2)
 
-# Install core apps
-#
+# Install core-dev apps
 core_apps=$(echo "build-essential libxml2-dev libxslt1-dev libffi-dev graphviz libpq-dev libssl-dev zlib1g-dev")
 for a in $core_apps; do
      echo $(tput setaf 6)
@@ -18,10 +17,18 @@ for a in $core_apps; do
 done
 
 echo $(tput setaf 6)
-echo "!!-- End of core apps installation --!!"$(tput sgr0)
+echo "!!-- End of core-dev apps installation --!!"$(tput sgr0)
+
+ln /usr/bin/python3.5 /usr/local/bin/python
+
+# install pip3 version 9.0.1
+echo $(tput setaf 6)
+echo "Installing pip3 .... Please wait ...." $(tput sgr0)
+apt-get install -y python3-setuptools
+easy_install3 pip
+echo $(tput setaf 6)"!!-- End of pip3 installation --!!" $(tput sgr0)
 
 # Download and install latest netbox 
-#
 netbox_ver=$(echo "2.2.7")
 echo -e "$(tput setaf 6)Installing  netbox-v"$netbox_ver".... Please wait .... $(tput sgr0)"
 
@@ -46,7 +53,6 @@ echo "!!-- End of netbox apps installation"$(tput sgr0)
 sleep 2
 
 # Configure netbox
-#
 user="sysadmin"
 password="67\.Epping"
 intf=$(ifconfig | grep -m1 ^e | awk '{print $1}')
@@ -54,7 +60,7 @@ syshost=$(hostname)
 sysip=$(ifconfig | grep $intf -A 1 | grep inet | awk '{print $2}' \
     | awk -F: '{print $2}')
 
-sed -i 's/python$/python3/' /opt/netbox/netbox/generate_secret_key.py
+# sed -i 's/python$/python3/' /opt/netbox/netbox/generate_secret_key.py
 key=$(/opt/netbox/netbox/generate_secret_key.py)
 
 cat /opt/netbox/netbox/netbox/configuration.example.py | \
@@ -73,9 +79,9 @@ echo $(tput sgr0)
 echo $(tput setaf 6)
 echo "Run Database migration with following commands:"
 echo "cd /opt/netbox/netbox/"
-echo "sudo -H python3 ./manage.py migrate"
-echo "sudo -H python3 ./manage.py createsuperuser"
-echo "sudo -H python3 ./manage.py collectstatic --no-input"
-echo "sudo -H python3 ./manage.py loaddata initial_data"
-echo "sudo -H python3 ./manage.py runserver 0.0.0.0:8000 --insecure"
+echo "sudo -H python ./manage.py migrate"
+echo "sudo -H python ./manage.py createsuperuser"
+echo "sudo -H python ./manage.py collectstatic --no-input"
+echo "sudo -H python ./manage.py loaddata initial_data"
+echo "sudo -H python ./manage.py runserver 0.0.0.0:8000 --insecure"
 echo $(tput sgr0)
