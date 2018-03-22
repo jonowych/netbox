@@ -9,10 +9,8 @@ exec >  >(tee -a /tmp/install.log)
 exec 2> >(tee -a /tmp/install.log >&2)
 
 apt-get update
-apt-get install -y postgresql libpq-dev 
-
-# Install core-dev apps
-core_apps=$(echo "build-essential libxml2-dev libxslt1-dev libffi-dev graphviz libpq-dev libssl-dev zlib1g-dev")
+# Install postgresql and core-dev apps
+core_apps=$(echo "postgresql build-essential libpq-dev libxml2-dev libxslt1-dev libffi-dev libssl-dev graphviz zlib1g-dev")
 for a in $core_apps; do
      echo $(tput setaf 6)
      echo "Installing $a .... Please wait .... "$(tput sgr0)
@@ -20,7 +18,7 @@ for a in $core_apps; do
 done
 
 echo $(tput setaf 6)
-echo "!!-- End of core-dev apps installation --!!"$(tput sgr0)
+echo "!!-- All core installation have finished --!!"$(tput sgr0)
 
 systemctl start postgresql
 systemctl enable postgresql
