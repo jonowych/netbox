@@ -8,9 +8,15 @@ if [ ! "${USER}" = "root" ] ; then
 exec >  >(tee -a /tmp/install.log)
 exec 2> >(tee -a /tmp/install.log >&2)
 
+read -p "Enter password for netbox user "sysadmin": " password
+read -p "Enter password again: " user
+
+if [ -z $password ] || [ $password != $user ]
+    then echo -e "$(tput setaf 1)!! Exit -- password entry error !!$(tput sgr0)"
+    exit 1; fi
+
 # Configure netbox
 user="sysadmin"
-password="67E&&!ng"
 intf=$(ifconfig | grep -m1 ^e | awk '{print $1}')
 syshost=$(hostname)
 sysip=$(ifconfig | grep $intf -A 1 | grep inet | awk '{print $2}' \
@@ -29,7 +35,7 @@ cat /opt/netbox/netbox/netbox/configuration.example.py | \
 sudo -H mv -f /tmp/configuration.py /opt/netbox/netbox/netbox/
 
 echo $(tput setaf 3)
-cat /opt/netbox/netbox/netbox/configuration.py
+sed -e "/^#.*$/d" -e "/^$/d" /opt/netbox/netbox/netbox/configuration.py
 echo $(tput sgr0)
 
 echo "Run Database migration with following commands:"
