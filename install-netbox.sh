@@ -8,6 +8,9 @@ if [ ! "${USER}" = "root" ] ; then
 exec >  >(tee -a /tmp/install.log)
 exec 2> >(tee -a /tmp/install.log >&2)
 
+netbox_ver=$(echo "2.3.1")
+read -p "Which netbox version? Press [enter] for default v2.3.1 " netbox_ver
+
 ln /usr/bin/python3.5 /usr/local/bin/python
 
 # install pip3 version 9.0.1
@@ -18,7 +21,6 @@ easy_install3 pip
 echo $(tput setaf 6)"!!-- End of pip3 installation --!!" $(tput sgr0)
 
 # Download and install latest netbox 
-netbox_ver=$(echo "2.3.1")
 echo -e "$(tput setaf 6)Installing  netbox-v"$netbox_ver".... Please wait .... $(tput sgr0)"
 
 if [ ! -f /tmp/v"$netbox_ver".tar.gz ] ; then
