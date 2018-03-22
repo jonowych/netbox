@@ -10,7 +10,7 @@ exec 2> >(tee -a /tmp/install.log >&2)
 
 # Configure netbox
 user="sysadmin"
-password="67\.Epping"
+password="67E&&!ng"
 intf=$(ifconfig | grep -m1 ^e | awk '{print $1}')
 syshost=$(hostname)
 sysip=$(ifconfig | grep $intf -A 1 | grep inet | awk '{print $2}' \
