@@ -26,8 +26,8 @@ sysip=$(ifconfig | grep $intf -A 1 | grep inet | awk '{print $2}' \
 key=$(/opt/netbox/netbox/generate_secret_key.py)
 
 # Escape special characters [/\&] to be used in sed
-password=$(echo $password | sed -e 's-\/-\\\/g; s-\\-\\\\-g; s-\&-\\\&-g')
-key=$(echo $key | sed -e 's-\/-\\\/g; s-\\-\\\\-g; s-\&-\\\&-g')
+password=$(echo $password | sed -e 's-\/-\\\/-g; s-\\-\\\\-g; s-\&-\\\&-g')
+key=$(echo $key | sed -e 's-\/-\\\/-g; s-\\-\\\\-g; s-\&-\\\&-g')
 
 cp /opt/netbox/netbox/netbox/configuration.example.py /tmp/configuration.py
 sed -e "s/^ALLOWED_HOSTS = \[\]$/ALLOWED_HOSTS = \['$syshost', '$sysip'\]/" \
