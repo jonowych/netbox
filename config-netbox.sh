@@ -20,8 +20,8 @@ if [ -z $password ] || [ -z $user ] || [ $password != $user ]
 user="sysadmin"
 intf=$(ifconfig | grep -m1 ^e | awk '{print $1}')
 syshost=$(hostname)
-sysip=$(ifconfig | grep $intf -A 1 | grep inet | awk '{print $2}' \
-    | awk -F: '{print $2}')
+sysip=$(ifconfig | grep $intf -A 1 | grep inet \
+    | awk '{print $2}' | awk -F: '{print $2}')
 
 key=$(/opt/netbox/netbox/generate_secret_key.py)
 
