@@ -8,11 +8,12 @@ if [ ! "${USER}" = "root" ] ; then
 exec >  >(tee -a /tmp/install.log)
 exec 2> >(tee -a /tmp/install.log >&2)
 
-read -p "Enter password for netbox user "sysadmin": " password
-read -p "Enter password again: " user
+read -p "Enter password for netbox user "sysadmin": " -s password
+echo -e "\nEnter password again: "
+read -s user
 
-if [ -z $password ] || [ $password != $user ]
-    then echo -e "$(tput setaf 1)!! Exit -- password entry error !!$(tput sgr0)"
+if [ -z $password ] || [ -z $user ] || [ $password != $user ]
+    then echo $(tput setaf 1)"!! Exit -- password entry error !!"$(tput sgr0)
     exit 1; fi
 
 # Configure netbox
