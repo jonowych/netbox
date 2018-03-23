@@ -33,7 +33,7 @@ sed -e "s/^ALLOWED_HOSTS = \[\]$/ALLOWED_HOSTS = \['$syshost', '$sysip'\]/" \
     -e "s/'PASSWORD': '/'PASSWORD': '$password/" \
     -e "s/^SECRET_KEY = '/SECRET_KEY = '$key/" -i /tmp/configuration.py
 
-sudo -H mv -f /tmp/configuration.py /opt/netbox/netbox/netbox/
+sudo mv -f /tmp/configuration.py /opt/netbox/netbox/netbox/
 
 echo $(tput setaf 3)
 sed -e "/^#.*$/d" -e "/^$/d" /opt/netbox/netbox/netbox/configuration.py
