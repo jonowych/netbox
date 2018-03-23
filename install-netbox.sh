@@ -26,11 +26,10 @@ echo -e "$(tput setaf 6)Installing  netbox-v"$netbox_ver".... Please wait .... $
 if [ ! -f /tmp/v"$netbox_ver".tar.gz ] ; then
   echo $(tput setaf 6)
   echo "Downloading netbox version-$netbox_ver .... Please wait .... "$(tput sgr0)
-  cd /tmp
-  wget https://github.com/digitalocean/netbox/archive/v"$netbox_ver".tar.gz
-  sudo tar -xzf v"$netbox_ver".tar.gz -C /opt
-  sudo ln -s /opt/netbox-"$netbox_ver"/ /opt/netbox
+  wget -P /tmp https://github.com/digitalocean/netbox/archive/v"$netbox_ver".tar.gz
 fi
+  sudo tar -xzf /tmp/v"$netbox_ver".tar.gz -C /opt
+  sudo ln -s /opt/netbox-"$netbox_ver"/ /opt/netbox
 sleep 2
 
 cd /opt/netbox
