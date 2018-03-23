@@ -8,8 +8,8 @@ if [ ! "${USER}" = "root" ] ; then
 exec >  >(tee -a /tmp/install.log)
 exec 2> >(tee -a /tmp/install.log >&2)
 
-netbox_ver=$(echo "2.3.1")
 read -p "Which netbox version? Press [enter] for default v2.3.1 " netbox_ver
+if [ -z $netbox_ver ]; then netbox_ver=$(echo "2.3.1"); fi
 
 ln /usr/bin/python3.5 /usr/local/bin/python
 
