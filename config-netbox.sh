@@ -26,12 +26,12 @@ sysip=$(ifconfig | grep $intf -A 1 | grep inet | awk '{print $2}' \
 key=$(/opt/netbox/netbox/generate_secret_key.py)
 echo $key
 
-cat /opt/netbox/netbox/netbox/configuration.example.py | \
-  sed "s/^ALLOWED_HOSTS = \[\]$/ALLOWED_HOSTS = \['$syshost', '$sysip'\]/" | \
-  sed "s/'USER': '/'USER': '$user/" | \
-  sed "s/'USERNAME': '/'USERNAME': '$user/" | \
-  sed "s/'PASSWORD': '/'PASSWORD': '$password/" | \
-  sed "s/^SECRET_KEY = '/SECRET_KEY = '$key/" >> /tmp/configuration.py
+cp /opt/netbox/netbox/netbox/configuration.example.py /tmp/configuration.py
+sed -e "s/^ALLOWED_HOSTS = \[\]$/ALLOWED_HOSTS = \['$syshost', '$sysip'\]/" \
+    -e "s/'USER': '/'USER': '$user/" \
+    -e "s/'USERNAME': '/'USERNAME': '$user/" \
+    -e "s/'PASSWORD': '/'PASSWORD': '$password/" \
+    -e "s/^SECRET_KEY = '/SECRET_KEY = '$key/" -i /tmp/configuration.py
 
 sudo -H mv -f /tmp/configuration.py /opt/netbox/netbox/netbox/
 
