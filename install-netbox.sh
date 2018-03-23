@@ -11,7 +11,7 @@ exec 2> >(tee -a /tmp/install.log >&2)
 read -p "Which netbox version? Press [enter] for default v2.3.1 " netbox_ver
 if [ -z $netbox_ver ]; then netbox_ver=$(echo "2.3.1"); fi
 
-ln /usr/bin/python3.5 /usr/local/bin/python
+ln -sf /usr/bin/python3.5 /usr/local/bin/python
 
 # install pip3 version 9.0.1
 echo $(tput setaf 6)
@@ -29,7 +29,7 @@ if [ ! -f /tmp/v"$netbox_ver".tar.gz ] ; then
   wget -P /tmp https://github.com/digitalocean/netbox/archive/v"$netbox_ver".tar.gz
 fi
   sudo tar -xzf /tmp/v"$netbox_ver".tar.gz -C /opt
-  sudo ln -s /opt/netbox-"$netbox_ver"/ /opt/netbox
+  sudo ln -sf /opt/netbox-"$netbox_ver"/ /opt/netbox
 sleep 2
 
 cd /opt/netbox
