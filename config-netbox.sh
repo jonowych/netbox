@@ -38,6 +38,16 @@ sed -e "s/^ALLOWED_HOSTS = \[\]$/ALLOWED_HOSTS = \['$syshost', '$sysip'\]/" \
 
 sudo mv -f /tmp/configuration.py /opt/netbox/netbox/netbox/
 
+systemctl start postgresql
+systemctl enable postgresql
+
+sudo -u postgres psql
+CREATE DATABASE netbox;
+CREATE USER sysadmin WITH PASSWORD '$password';
+GRANT ALL PRIVILEGES ON DATABASE netbox TO sysadmin;
+\q
+psql -U sysadmin -W -h localhost netbox
+
 echo $(tput setaf 3)
 sed -e "/^#.*$/d" -e "/^$/d" /opt/netbox/netbox/netbox/configuration.py
 echo $(tput sgr0)
