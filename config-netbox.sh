@@ -42,7 +42,7 @@ ln -sf /etc/nginx/sites-available/netbox
 service nginx restart
 
 cat <<EOF_gunicorn > /opt/netbox/gunicorn_config.py
-command = '/usr/bin/gunicorn'
+command = '/usr/local/bin/gunicorn'
 pythonpath = '/opt/netbox/netbox'
 bind = '127.0.0.1:8001'
 workers = 3
