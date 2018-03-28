@@ -52,8 +52,23 @@ sudo -H pip3 install gunicorn
 
 echo $(tput setaf 6)
 echo "!!-- End of netbox apps installation"
-echo "--- System restart in 10 seconds ---"
 echo $(tput sgr0)
 
-sleep 10
-shutdown -r now
+systemctl start postgresql
+systemctl enable postgresql
+
+echo $(tput setaf 6)
+echo "Create database with following commands: (; at the end)"
+echo $(tput setaf 3)
+sudo -u postgres psql
+CREATE DATABASE netbox;
+CREATE USER sysadmin WITH PASSWORD
+GRANT ALL PRIVILEGES ON DATABASE netbox TO sysadmin;
+echo $(tput setaf 6)
+echo "Enter \q to quit"
+echo "Login database again to confirm"
+echo $(tput setaf 3)
+echo "psql -U sysadmin -W -h localhost netbox"
+echo $(tput sgr0)
+
+
