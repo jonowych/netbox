@@ -36,24 +36,13 @@ sed -e "s/^ALLOWED_HOSTS = \[\]$/ALLOWED_HOSTS = \['$syshost', '$sysip'\]/" \
     -e "s/'PASSWORD': '/'PASSWORD': '$password/" \
     -e "s/^SECRET_KEY = '/SECRET_KEY = '$key/" -i /tmp/configuration.py
 
-sudo mv -f /tmp/configuration.py /opt/netbox/netbox/netbox/
-
-systemctl start postgresql
-systemctl enable postgresql
-
-sudo -u postgres psql
-CREATE DATABASE netbox;
-CREATE USER sysadmin WITH PASSWORD '$password';
-GRANT ALL PRIVILEGES ON DATABASE netbox TO sysadmin;
-\q
-psql -U sysadmin -W -h localhost netbox
-
 echo $(tput setaf 3)
+sudo mv -f /tmp/configuration.py /opt/netbox/netbox/netbox/
 sed -e "/^#.*$/d" -e "/^$/d" /opt/netbox/netbox/netbox/configuration.py
-echo $(tput sgr0)
 
-echo "Run Database migration with following commands:"
 echo $(tput setaf 6)
+echo "Run Database migration with following commands:"
+echo $(tput setaf 3)
 echo "cd /opt/netbox/netbox/"
 echo "python ./manage.py migrate"
 echo "python ./manage.py createsuperuser"
