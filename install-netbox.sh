@@ -17,7 +17,7 @@ apt-get update
 core_apps=$(echo "postgresql build-essential libpq-dev libxml2-dev libxslt1-dev libffi-dev libssl-dev graphviz zlib1g-dev nginx supervisor")
 for a in $core_apps; do
      echo -e $(tput setaf 6)"\nInstalling $a .... Please wait .... "$(tput sgr0)
-     sudo apt-get -y install $a
+     sudo apt-get -qq -y install $a
 done
 
 echo $(tput setaf 6)
@@ -51,4 +51,9 @@ echo -e $(tput setaf 6)"\nPip3 installing gunicorn .... Please wait .... "$(tput
 sudo -H pip3 install gunicorn
 
 echo $(tput setaf 6)
-echo "!!-- End of netbox apps installation"$(tput sgr0)
+echo "!!-- End of netbox apps installation"
+echo "--- System restart in 10 seconds ---"
+echo $(tput sgr0)
+
+sleep 10
+shutdown -r now
