@@ -60,15 +60,13 @@ systemctl enable postgresql
 echo $(tput setaf 6)
 echo "Create database with following commands: (; at the end)"
 echo $(tput setaf 3)
-sudo -u postgres psql
-CREATE DATABASE netbox;
-CREATE USER sysadmin WITH PASSWORD
-GRANT ALL PRIVILEGES ON DATABASE netbox TO sysadmin;
+echo "sudo -u postgres psql"
+echo "CREATE DATABASE netbox;"
+echo "CREATE USER sysadmin WITH PASSWORD '?????';"
+echo "GRANT ALL PRIVILEGES ON DATABASE netbox TO sysadmin;"
 echo $(tput setaf 6)
 echo "Enter \q to quit"
 echo "Login database again to confirm"
 echo $(tput setaf 3)
 echo "psql -U sysadmin -W -h localhost netbox"
 echo $(tput sgr0)
-
-
