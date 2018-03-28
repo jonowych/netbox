@@ -16,6 +16,46 @@ if [ -z $password ] || [ -z $user ] || [ $password != $user ]
     then echo $(tput setaf 1)"!! Exit -- password entry error !!"$(tput sgr0)
     exit 1; fi
 
+cat <<EOF_nginx > /etc/nginx/sites-available/netbox
+server {
+    listen 80;
+    server_name 192.168.56.231;
+    client_max_body_size 25m;
+
+    location /static/ {
+        alias /opt/netbox/netbox/static/;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:8001;
+        proxy_set_header X-Forwarded-Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        add_header P3P 'CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"';
+    }
+}
+EOF_nginx
+
+rm -f /etc/nginx/sites-enabled/default
+rm -f /etc/nginx/sites-available/default
+ln -sf /etc/nginx/sites-available/netbox
+service nginx restart
+
+cat <<EOF_gunicorn > /opt/netbox/gunicorn_config.py
+command = '/usr/bin/gunicorn'
+pythonpath = '/opt/netbox/netbox'
+bind = '127.0.0.1:8001'
+workers = 3
+user = 'www-data'
+EOF_gunicorn
+
+cat <<EOF_supervisor >/etc/supervisor/conf.d/netbox.conf
+[program:netbox]
+command = gunicorn -c /opt/netbox/gunicorn_config.py netbox.wsgi
+directory = /opt/netbox/netbox/
+user = www-data
+EOF_supervisor
+
 # Configure netbox
 user="sysadmin"
 intf=$(ifconfig | grep -m1 ^e | awk '{print $1}')
@@ -49,4 +89,5 @@ echo "python ./manage.py createsuperuser"
 echo "sudo python ./manage.py collectstatic --no-input"
 echo "python ./manage.py loaddata initial_data"
 echo "python ./manage.py runserver 0.0.0.0:8000 --insecure"
+echo "service supervisor restart"
 echo $(tput sgr0)
