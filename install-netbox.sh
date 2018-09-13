@@ -9,8 +9,8 @@ exec >  >(tee -a /tmp/install.log)
 exec 2> >(tee -a /tmp/install.log >&2)
 
 netbox_ver=""
-read -p "Which netbox version? Press [enter] for default v2.3.1 " netbox_ver
-if [ -z $netbox_ver ]; then netbox_ver=$(echo "2.3.1"); fi
+read -p "Which netbox version? Press [enter] for default v2.4.4 " netbox_ver
+if [ -z $netbox_ver ]; then netbox_ver=$(echo "2.4.4"); fi
 
 apt-get update
 # Install postgresql and core-dev apps
