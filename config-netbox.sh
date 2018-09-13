@@ -16,10 +16,18 @@ if [ -z $password ] || [ -z $user ] || [ $password != $user ]
     then echo $(tput setaf 1)"!! Exit -- password entry error !!"$(tput sgr0)
     exit 1; fi
 
+# set parameters
+user="sysadmin"
+intf=$(ifconfig | grep -m1 ^e | awk '{print $1}')
+syshost=$(hostname)
+sysip=$(ifconfig | grep $intf -A 1 | grep inet \
+    | awk '{print $2}' | awk -F: '{print $2}')
+    
+# edit configuration files
 cat <<EOF_nginx > /etc/nginx/sites-available/netbox
 server {
     listen 80;
-    server_name 192.168.56.231;
+    server_name $sysip;
     client_max_body_size 25m;
 
     location /static/ {
@@ -46,23 +54,17 @@ command = '/usr/local/bin/gunicorn'
 pythonpath = '/opt/netbox/netbox'
 bind = '127.0.0.1:8001'
 workers = 3
-user = 'www-data'
+user = '$user'
 EOF_gunicorn
 
 cat <<EOF_supervisor >/etc/supervisor/conf.d/netbox.conf
 [program:netbox]
 command = gunicorn -c /opt/netbox/gunicorn_config.py netbox.wsgi
 directory = /opt/netbox/netbox/
-user = www-data
+user = $user
 EOF_supervisor
 
 # Configure netbox
-user="sysadmin"
-intf=$(ifconfig | grep -m1 ^e | awk '{print $1}')
-syshost=$(hostname)
-sysip=$(ifconfig | grep $intf -A 1 | grep inet \
-    | awk '{print $2}' | awk -F: '{print $2}')
-
 key=$(/opt/netbox/netbox/generate_secret_key.py)
 
 # Escape special characters [/\&] to be used in sed
