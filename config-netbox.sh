@@ -44,8 +44,9 @@ server {
 }
 EOF_nginx
 
-rm -f /etc/nginx/sites-enabled/default
+cd /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-available/default
+rm -f default
 ln -sf /etc/nginx/sites-available/netbox
 service nginx restart
 
@@ -59,7 +60,7 @@ EOF_gunicorn
 
 cat <<EOF_supervisor >/etc/supervisor/conf.d/netbox.conf
 [program:netbox]
-command = gunicorn -c /opt/netbox/gunicorn_config.py netbox.wsgi
+command = /usr/local/bin/gunicorn -c /opt/netbox/gunicorn_config.py netbox.wsgi
 directory = /opt/netbox/netbox/
 user = $user
 EOF_supervisor
