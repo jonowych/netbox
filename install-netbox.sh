@@ -14,7 +14,7 @@ if [ -z $netbox_ver ]; then netbox_ver=$(echo "2.4.4"); fi
 
 apt-get update
 # Install postgresql and core-dev apps
-core_apps=$(echo "postgresql build-essential libpq-dev libxml2-dev libxslt1-dev libffi-dev libssl-dev graphviz zlib1g-dev nginx supervisor")
+core_apps=$(echo "build-essential libxml2-dev libxslt1-dev libffi-dev graphviz libpq-dev libssl-dev zlib1g-dev postgresql nginx supervisor")
 for a in $core_apps; do
      echo -e $(tput setaf 6)"\nInstalling $a .... Please wait .... "$(tput sgr0)
      sudo apt-get -qq -y install $a
