@@ -23,7 +23,9 @@ done
 echo $(tput setaf 6)
 echo "!!-- All core installation have finished --!!"$(tput sgr0)
 
+# make sure all netbox commands are running in Python3
 ln -sf /usr/bin/python3.5 /usr/bin/python
+
 # install pip3 version 9.0.1
 echo -e $(tput setaf 6)"\nInstalling pip3 .... Please wait ...." $(tput sgr0)
 apt-get install -y python3-setuptools
