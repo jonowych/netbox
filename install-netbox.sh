@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo
-if [ ! "${USER}" = "root" ] ; then
-   echo -e "Type $(tput setaf 1)sudo ./install.sh$(tput sgr0) for installation"
+if [ ! "${USER}" = "root" ] || [ ! "${HOME}" = "/home/root" ] ; then
+   echo -e "Type $(tput setaf 1)sudo -H ./install.sh$(tput sgr0) for installation"
    exit 0 ; fi
 
 exec >  >(tee -a /tmp/install.log)
@@ -46,11 +46,11 @@ sleep 2
 
 cd /opt/netbox
 echo -e $(tput setaf 6)"\nPip3 installing requirements .... Please wait .... "$(tput sgr0)
-sudo -H pip3 install -r requirements.txt
+sudo pip3 install -r requirements.txt
 echo -e $(tput setaf 6)"\nPip3 installing napalm .... Please wait .... "$(tput sgr0)
-sudo -H pip3 install napalm
+sudo pip3 install napalm
 echo -e $(tput setaf 6)"\nPip3 installing gunicorn .... Please wait .... "$(tput sgr0)
-sudo -H pip3 install gunicorn
+sudo pip3 install gunicorn
 
 echo $(tput setaf 6)
 echo "!!-- End of netbox apps installation"
