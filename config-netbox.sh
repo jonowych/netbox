@@ -8,7 +8,7 @@ if [ ! "${USER}" = "root" ] ; then
 exec >  >(tee -a /tmp/install.log)
 exec 2> >(tee -a /tmp/install.log >&2)
 
-read -p "Enter password for netbox user "sydadmin": " -s password
+read -p "Enter password for netbox user "tasadmin": " -s password
 echo -e "\nEnter password again: "
 read -s user
 
@@ -17,7 +17,7 @@ if [ -z $password ] || [ -z $user ] || [ $password != $user ]
     exit 1; fi
 
 # set parameters
-user="sydadmin"
+user="tasadmin"
 intf=$(ifconfig | grep -m1 ^e | awk '{print $1}')
 syshost=$(hostname)
 sysip=$(ifconfig | grep $intf -A 1 | grep inet \
