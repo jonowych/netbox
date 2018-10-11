@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo
-if [ ! "${USER}" = "root" ] || [ ! "${HOME}" = "/home/root" ] ; then
-   echo -e "Type $(tput setaf 1)sudo -H ./install.sh$(tput sgr0) for installation"
+if [ ! "${USER}" = "root" ] || [ ! "${HOME}" = "/root" ] ; then
+   echo -e "Type $(tput setaf 1)sudo -H ./install-netbox.sh$(tput sgr0) for installation"
    exit 0 ; fi
 
 exec >  >(tee -a /tmp/install.log)
