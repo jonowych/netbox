@@ -9,8 +9,8 @@ exec >  >(tee -a /tmp/install.log)
 exec 2> >(tee -a /tmp/install.log >&2)
 
 netbox_ver=""
-read -p "Which netbox version? Press [enter] for default v2.4.4 " netbox_ver
-if [ -z $netbox_ver ]; then netbox_ver=$(echo "2.4.4"); fi
+read -p "Which netbox version? Press [enter] for default v2.4.6 " netbox_ver
+if [ -z $netbox_ver ]; then netbox_ver=$(echo "2.4.6"); fi
 
 apt-get update
 # Install postgresql and core-dev apps
@@ -64,11 +64,11 @@ echo "Create database with following commands: (; at the end)"
 echo $(tput setaf 3)
 echo "sudo -u postgres psql"
 echo "CREATE DATABASE netbox;"
-echo "CREATE USER sydadmin WITH PASSWORD '?????';"
-echo "GRANT ALL PRIVILEGES ON DATABASE netbox TO sydadmin;"
+echo "CREATE USER tasadmin WITH PASSWORD '?????';"
+echo "GRANT ALL PRIVILEGES ON DATABASE netbox TO tasadmin;"
 echo $(tput setaf 6)
 echo "Enter \q to quit"
 echo "Login database again to confirm"
 echo $(tput setaf 3)
-echo "psql -U sydadmin -W -h localhost netbox"
+echo "psql -U tasadmin -W -h localhost netbox"
 echo $(tput sgr0)
